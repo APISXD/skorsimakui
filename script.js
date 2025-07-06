@@ -24,8 +24,10 @@ subtestsData.forEach((subtest, index) => {
 
 document.getElementById("scoreForm").addEventListener("submit", function (e) {
   e.preventDefault();
+
   let totalSkor = 0;
   let resultText = "";
+  let skorSubtes = [];
 
   subtestsData.forEach((subtest, index) => {
     const benar = parseInt(document.getElementById(`benar${index}`).value) || 0;
@@ -33,12 +35,36 @@ document.getElementById("scoreForm").addEventListener("submit", function (e) {
     const kosong = subtest.soal - benar - salah;
     const skor = benar * 4 + salah * -1;
     totalSkor += skor;
+    skorSubtes.push(skor);
 
     resultText += `
-        <p><strong>${subtest.name}</strong>: Benar ${benar}, Salah ${salah}, Kosong ${kosong}, Skor = ${skor}</p>
-      `;
+      <p><strong>${subtest.name}</strong>: Benar ${benar}, Salah ${salah}, Kosong ${kosong}, Skor = ${skor}</p>
+    `;
   });
 
   resultText += `<hr><p><strong>Total Skor: ${totalSkor}</strong></p>`;
   document.getElementById("result").innerHTML = resultText;
+
+  // ✅ Kirim ke Google Sheets
+  fetch(
+    "https://script.google.com/macros/s/AKfycbzmkRbvBOcNtB922s_aTlZG_H9nhUEzc3jqdyZfyAQJdLyUhDSMDnPmn2sUqXanr2vMhQ/exec",
+    {
+      method: "POST",
+      body: JSON.stringify({
+        md: skorSubtes[0],
+        bi: skorSubtes[1],
+        be: skorSubtes[2],
+        verbal: skorSubtes[3],
+        kuant: skorSubtes[4],
+        logika: skorSubtes[5],
+        total: totalSkor,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  )
+    .then((res) => res.text())
+    .then((msg) => console.log("Berhasil kirim ke Sheet:", msg))
+    .catch((err) => console.error("Gagal kirim ke Sheet:", err));
 });
