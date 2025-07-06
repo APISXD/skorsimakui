@@ -49,7 +49,7 @@ document.getElementById("scoreForm").addEventListener("submit", function (e) {
   console.log("Data yang akan dikirim ke Sheet:", skorSubtes, totalSkor);
 
   fetch(
-    "https://v1.nocodeapi.com/kocijas/google_sheets/wqhFpBJtRswjUwNY?tabId=Sheet1",
+    "https://v1.nocodeapi.com/kocijas/google_sheets/wqhFpBJtRswjUwNY?tabId=Shee1",
     {
       method: "POST",
       headers: {
