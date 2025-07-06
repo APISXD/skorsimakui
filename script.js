@@ -9,6 +9,7 @@ const subtestsData = [
 
 const subtestsContainer = document.getElementById("subtests");
 
+
 subtestsData.forEach((subtest, index) => {
   const div = document.createElement("div");
   div.className = "subtest";
@@ -21,6 +22,14 @@ subtestsData.forEach((subtest, index) => {
     `;
   subtestsContainer.appendChild(div);
 });
+const jurusanWrapper = document.createElement("div");
+jurusanWrapper.className = "subtest"; // biar sama gaya dengan subtest lain
+jurusanWrapper.innerHTML = `
+  <h3>Jurusan yang kamu tuju (Opsional)</h3>
+  <label for="jurusan">Tuliskan jurusan pilihanmu</label>
+  <input type="text" id="jurusan" name="jurusan" placeholder="Contoh: Ilmu Komputer"/>
+`;
+subtestsContainer.appendChild(jurusanWrapper);
 
 document.getElementById("scoreForm").addEventListener("submit", function (e) {
   e.preventDefault();
@@ -50,13 +59,15 @@ document.getElementById("scoreForm").addEventListener("submit", function (e) {
       <p><strong>${subtest.name}</strong>: Benar ${benar} (${skorBenar}), Salah ${salah} (${skorSalah}), Skor = ${skor}</p>
     `;
   });
+  const jurusan = document.getElementById("jurusan").value.trim() || "-";
 
   resultText += `<hr><p><strong>Total Skor: ${totalSkor}</strong></p>`;
   document.getElementById("result").innerHTML = resultText;
 
   // Tambahkan total skor ke akhir
   dataToSend.push(totalSkor);
-
+  dataToSend.push(jurusan);
+  
   console.log("Data yang akan dikirim ke Sheet:", dataToSend);
 
   fetch(
