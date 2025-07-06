@@ -47,9 +47,12 @@ document.getElementById("scoreForm").addEventListener("submit", function (e) {
 
   // ✅ Kirim ke Google Sheets
   fetch(
-    "https://script.google.com/macros/s/AKfycbzmkRbvBOcNtB922s_aTlZG_H9nhUEzc3jqdyZfyAQJdLyUhDSMDnPmn2sUqXanr2vMhQ/exec",
+    "https://api.sheetbest.com/sheets/b8f78795-7716-437f-a633-934f2c38ff5e",
     {
       method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
       body: JSON.stringify({
         md: skorSubtes[0],
         bi: skorSubtes[1],
@@ -58,13 +61,11 @@ document.getElementById("scoreForm").addEventListener("submit", function (e) {
         kuant: skorSubtes[4],
         logika: skorSubtes[5],
         total: totalSkor,
+        timestamp: new Date().toISOString(),
       }),
-      headers: {
-        "Content-Type": "application/json",
-      },
     }
   )
-    .then((res) => res.text())
-    .then((msg) => console.log("Berhasil kirim ke Sheet:", msg))
-    .catch((err) => console.error("Gagal kirim ke Sheet:", err));
+    .then((res) => res.json())
+    .then((data) => console.log("Berhasil kirim ke Sheet.best", data))
+    .catch((err) => console.error("Gagal kirim ke Sheet.best", err));  
 });
