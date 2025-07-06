@@ -46,26 +46,39 @@ document.getElementById("scoreForm").addEventListener("submit", function (e) {
   document.getElementById("result").innerHTML = resultText;
 
   // ✅ Kirim ke Google Sheets
+  console.log("Data yang akan dikirim ke Sheet:", skorSubtes, totalSkor);
+
   fetch(
-    "https://api.sheetbest.com/sheets/b8f78795-7716-437f-a633-934f2c38ff5e",
+    "https://v1.nocodeapi.com/kocijas/google_sheets/mCTzDPNbTKRvlMvx?tabId=Sheet1",
     {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({
-        md: skorSubtes[0],
-        bi: skorSubtes[1],
-        be: skorSubtes[2],
-        verbal: skorSubtes[3],
-        kuant: skorSubtes[4],
-        logika: skorSubtes[5],
-        total: totalSkor,
-        timestamp: new Date().toISOString(),
-      }),
+      body: JSON.stringify([
+        [
+          new Date().toLocaleString(), // Timestamp
+          skorSubtes[0], // Matematika Das
+          skorSubtes[1], // B. Indonesia
+          skorSubtes[2], // B. Inggris
+          skorSubtes[3], // Verbal
+          skorSubtes[4], // Kuantitatif
+          skorSubtes[5], // Logika
+          totalSkor, // Total
+        ],
+      ]),
     }
   )
     .then((res) => res.json())
-    .then((data) => console.log("Berhasil kirim ke Sheet.best", data))
-    .catch((err) => console.error("Gagal kirim ke Sheet.best", err));  
+    .then((data) => {
+      console.log(
+        "✅ Data berhasil dikirim ke Google Sheet via NoCodeAPI:",
+        data
+      );
+    })
+    .catch((err) => {
+      console.error("❌ Gagal kirim ke NoCodeAPI:", err);
+    });
+
+  
 });
