@@ -95,7 +95,7 @@
     color: #444;
   }
   
-  input[type="number"] {
+  input[type="number"], input[type="text"] {
     width: 100%;
     padding: 8px;
     margin-top: 3px;
