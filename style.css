@@ -132,8 +132,142 @@
     border-radius: 10px;
     color: #003366;
   }
-  
   .subtitle a:link,
 .subtitle a:visited {
   color: #cc8b00;
+}
+#resultList li {
+  background: #f4f7ff;
+  margin-bottom: 10px;
+  padding: 10px 15px;
+  border-radius: 10px;
+  font-weight: 500;
+  color: #002b5b;
+}
+.search-tools {
+  margin-bottom: 20px;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.search-tools input[type="text"] {
+  flex: 1;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  font-size: 14px;
+}
+
+.search-tools button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  font-weight: bold;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.search-tools button:hover {
+  background-color: #0056b3;
+}
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.pagination button {
+  padding: 8px 14px;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  background-color: #ffc107;
+  color: #002b5b;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.pagination button:disabled {
+  background-color: #e0e0e0;
+  color: #999;
+  cursor: not-allowed;
+}
+
+#pageInfo {
+  font-weight: bold;
+  color: #333;
+}
+#others-result.locked {
+  filter: blur(6px);
+  pointer-events: none;
+  user-select: none;
+  position: relative;
+}
+
+#others-result.locked::after {
+  content: "🔒 Skor peserta lain akan terlihat setelah kamu hitung skormu sendiri.";
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #002b5b;
+  background: rgba(255, 255, 255, 0.9);
+  padding: 20px;
+  font-weight: bold;
+  border-radius: 10px;
+  text-align: center;
+  max-width: 90%;
+  z-index: 10;
+}
+#others-result.locked {
+  position: relative;
+  pointer-events: none;
+  filter: blur(5px);
+}
+
+#others-result.locked .blur-overlay {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(3px);
+  z-index: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  font-size: 16px;
+  color: #333;
+  text-align: center;
+  padding: 20px;
+  border-radius: 12px;
+}
+
+#others-result:not(.locked) .blur-overlay {
+  display: none;
+}
+.locked-wrapper {
+  position: relative;
+  margin-top: 40px;
+}
+.locked-info {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #fff8e1;
+  padding: 14px 22px;
+  border-radius: 12px;
+  color: #aa7200;
+  font-weight: 600;
+  text-align: center;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.1);
+  z-index: 5;
+  width: max-content;
+  max-width: 90%;
+  pointer-events: none;
 }
