@@ -1,14 +1,24 @@
 const subtestsData = [
-  { name: "Matematika Dasar", soal: 15, waktu: 20 },
-  { name: "Bahasa Indonesia", soal: 15, waktu: 20 },
-  { name: "Bahasa Inggris", soal: 15, waktu: 20 },
-  { name: "Penalaran Verbal", soal: 25, waktu: 15 },
-  { name: "Penalaran Kuantitatif", soal: 35, waktu: 50 },
-  { name: "Penalaran Logika", soal: 25, waktu: 40 },
+  { code: "MD", name: "Matematika Dasar", soal: 15, waktu: 20 },
+  { code: "BI", name: "Bahasa Indonesia", soal: 15, waktu: 20 },
+  { code: "ING", name: "Bahasa Inggris", soal: 15, waktu: 20 },
+  { code: "VER", name: "Penalaran Verbal", soal: 25, waktu: 15 },
+  { code: "KUA", name: "Penalaran Kuantitatif", soal: 35, waktu: 50 },
+  { code: "LOG", name: "Penalaran Logika", soal: 25, waktu: 40 },
 ];
 
-const subtestsContainer = document.getElementById("subtests");
+window.addEventListener("DOMContentLoaded", () => {
+  const hasSubmitted = localStorage.getItem("simakScoreSubmitted") === "true";
+  if (hasSubmitted) {
+    document.getElementById("others-result").classList.remove("locked");
+    const infoText = document.querySelector(".locked-info");
+    if (infoText) infoText.remove();
+    loadOthersResults();
+    console.log("Data dikirim ke SheetBest:", dataToSend);
 
+  }
+});
+const subtestsContainer = document.getElementById("subtests");
 
 subtestsData.forEach((subtest, index) => {
   const div = document.createElement("div");
@@ -36,7 +46,19 @@ document.getElementById("scoreForm").addEventListener("submit", function (e) {
 
   let totalSkor = 0;
   let resultText = "";
-  let dataToSend = [new Date().toLocaleString()]; // Timestamp
+  let dataToSend = {
+    Timestamp: new Date().toLocaleString("id-ID", {
+      timeZone: "Asia/Jakarta",
+      hour12: false,
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+    }),
+  };
+  
 
   subtestsData.forEach((subtest, index) => {
     const benar = parseInt(document.getElementById(`benar${index}`).value) || 0;
@@ -53,35 +75,36 @@ document.getElementById("scoreForm").addEventListener("submit", function (e) {
     const salahFormatted = `${salah} (${skorSalah})`;
 
     // Tambahkan ke baris yang dikirim
-    dataToSend.push(benarFormatted, salahFormatted);
+    dataToSend[`${subtest.code} Benar`] = benarFormatted;
+    dataToSend[`${subtest.code} Salah`] = salahFormatted;    
 
     resultText += `
       <p><strong>${subtest.name}</strong>: Benar ${benar} (${skorBenar}), Salah ${salah} (${skorSalah}), Skor = ${skor}</p>
     `;
-    
   });
   const jurusan = document.getElementById("jurusan").value.trim() || "-";
 
   resultText += `<hr><p><strong>Total Skor: ${totalSkor}</strong></p>`;
   document.getElementById("result").innerHTML = resultText;
+  localStorage.setItem("simakScoreSubmitted", "true");
   document.getElementById("others-result").classList.remove("locked");
   const infoText = document.querySelector(".locked-info");
   if (infoText) infoText.remove();
 
   // Tambahkan total skor ke akhir
-  dataToSend.push(totalSkor);
-  dataToSend.push(jurusan);
-  
+  dataToSend["Total Skor"] = totalSkor;
+  dataToSend["Jurusan"] = jurusan;
+
   console.log("Data yang akan dikirim ke Sheet:", dataToSend);
 
   fetch(
-    "https://v1.nocodeapi.com/smaasq/google_sheets/WHrCZIDhhrOWkoOL?tabId=Sheet1",
+    "https://api.sheetbest.com/sheets/5b1d8798-ceff-4827-9957-a7e26dd7a6a2",
     {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify([dataToSend]),
+      body: JSON.stringify(dataToSend), // ✅ bukan array
     }
   )
     .then((res) => res.json())
@@ -94,8 +117,6 @@ document.getElementById("scoreForm").addEventListener("submit", function (e) {
     .catch((err) => {
       console.error("❌ Gagal kirim ke NoCodeAPI:", err);
     });
-
-    
 });
 function updateCountdown() {
   const targetDate = new Date("July 11, 2025 00:00:00").getTime();
@@ -103,32 +124,34 @@ function updateCountdown() {
   const distance = targetDate - now;
 
   if (distance <= 0) {
-    document.getElementById("countdown").innerText = "Pengumuman SIMAK UI telah tiba! 🎯";
+    document.getElementById("countdown").innerText =
+      "Pengumuman SIMAK UI telah tiba! 🎯";
     clearInterval(interval);
     return;
   }
 
   const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-  const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  const hours = Math.floor(
+    (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+  );
   const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
   const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-  document.getElementById("countdown").innerText =
-    `Menuju Pengumuman SIMAK UI: ${days} hari ${hours} jam ${minutes} menit ${seconds} detik`;
+  document.getElementById(
+    "countdown"
+  ).innerText = `Menuju Pengumuman SIMAK UI: ${days} hari ${hours} jam ${minutes} menit ${seconds} detik`;
 }
 
 const interval = setInterval(updateCountdown, 1000);
 updateCountdown(); // tampilkan langsung saat halaman dibuka
 function loadOthersResults(filterText = "") {
-  fetch(
-    "https://v1.nocodeapi.com/smaasq/google_sheets/WHrCZIDhhrOWkoOL?tabId=Sheet1"
-  )
+  fetch("https://api.sheetbest.com/sheets/5b1d8798-ceff-4827-9957-a7e26dd7a6a2")
     .then((res) => res.json())
     .then((data) => {
       const list = document.getElementById("resultList");
       list.innerHTML = "";
 
-      const results = data.data
+      const results = data
         .filter((row) => row["Jurusan"] && row["Jurusan"] !== "-")
         .map((row) => ({
           jurusan: row["Jurusan"],
@@ -158,15 +181,13 @@ document.getElementById("searchInput").addEventListener("input", function () {
 });
 
 document.getElementById("topScoresBtn").addEventListener("click", function () {
-  fetch(
-    "https://v1.nocodeapi.com/smaasq/google_sheets/WHrCZIDhhrOWkoOL?tabId=Sheet1"
-  )
+  fetch("https://api.sheetbest.com/sheets/5b1d8798-ceff-4827-9957-a7e26dd7a6a2")
     .then((res) => res.json())
     .then((data) => {
       const list = document.getElementById("resultList");
       list.innerHTML = "";
 
-      const results = data.data
+      const results = data
         .filter((row) => row["Jurusan"] && row["Jurusan"] !== "-")
         .map((row) => ({
           jurusan: row["Jurusan"],
@@ -218,12 +239,10 @@ function renderResultsPage(page, filterText = "") {
 }
 
 function loadOthersResults(filterText = "") {
-  fetch(
-    "https://v1.nocodeapi.com/smaasq/google_sheets/WHrCZIDhhrOWkoOL?tabId=Sheet1"
-  )
+  fetch("https://api.sheetbest.com/sheets/5b1d8798-ceff-4827-9957-a7e26dd7a6a2")
     .then((res) => res.json())
     .then((data) => {
-      allResults = data.data
+      allResults = data
         .filter((row) => row["Jurusan"] && row["Jurusan"] !== "-")
         .map((row) => ({
           jurusan: row["Jurusan"],
