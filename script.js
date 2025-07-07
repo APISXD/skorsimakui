@@ -75,7 +75,7 @@ document.getElementById("scoreForm").addEventListener("submit", function (e) {
   console.log("Data yang akan dikirim ke Sheet:", dataToSend);
 
   fetch(
-    "https://v1.nocodeapi.com/kocijas/google_sheets/WwQrDQSTrfBlfVMJ?tabId=Sheet1",
+    "https://v1.nocodeapi.com/setikd/google_sheets/CmyqKlEcJjycaxOv?tabId=Sheet1",
     {
       method: "POST",
       headers: {
@@ -121,7 +121,7 @@ const interval = setInterval(updateCountdown, 1000);
 updateCountdown(); // tampilkan langsung saat halaman dibuka
 function loadOthersResults(filterText = "") {
   fetch(
-    "https://v1.nocodeapi.com/kocijas/google_sheets/WwQrDQSTrfBlfVMJ?tabId=Sheet1"
+    "https://v1.nocodeapi.com/setikd/google_sheets/CmyqKlEcJjycaxOv?tabId=Sheet1"
   )
     .then((res) => res.json())
     .then((data) => {
@@ -159,7 +159,7 @@ document.getElementById("searchInput").addEventListener("input", function () {
 
 document.getElementById("topScoresBtn").addEventListener("click", function () {
   fetch(
-    "https://v1.nocodeapi.com/kocijas/google_sheets/WwQrDQSTrfBlfVMJ?tabId=Sheet1"
+    "https://v1.nocodeapi.com/setikd/google_sheets/CmyqKlEcJjycaxOv?tabId=Sheet1"
   )
     .then((res) => res.json())
     .then((data) => {
@@ -219,7 +219,7 @@ function renderResultsPage(page, filterText = "") {
 
 function loadOthersResults(filterText = "") {
   fetch(
-    "https://v1.nocodeapi.com/kocijas/google_sheets/WwQrDQSTrfBlfVMJ?tabId=Sheet1"
+    "https://v1.nocodeapi.com/setikd/google_sheets/CmyqKlEcJjycaxOv?tabId=Sheet1"
   )
     .then((res) => res.json())
     .then((data) => {
