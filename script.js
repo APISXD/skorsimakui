@@ -139,7 +139,7 @@ function updateCountdown() {
 
   document.getElementById(
     "countdown"
-  ).innerText = `Menuju Pengumuman SIMAK UI: ${days} hari ${hours} jam ${minutes} menit ${seconds} detik`;
+  ).innerText = `Menuju Pengumuman SIMAK UI (+- 11 Juli): ${days} hari ${hours} jam ${minutes} menit ${seconds} detik`;
 }
 
 const interval = setInterval(updateCountdown, 1000);
