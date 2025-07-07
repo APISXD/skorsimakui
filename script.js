@@ -208,7 +208,7 @@ loadOthersResults();
 
 let allResults = [];
 let currentPage = 1;
-const resultsPerPage = 5;
+const resultsPerPage = 10;
 
 function renderResultsPage(page, filterText = "") {
   const list = document.getElementById("resultList");
