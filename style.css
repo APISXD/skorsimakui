@@ -133,3 +133,7 @@
     color: #003366;
   }
   
+  .subtitle a:link,
+.subtitle a:visited {
+  color: #cc8b00;
+}
