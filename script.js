@@ -36,7 +36,7 @@ const jurusanWrapper = document.createElement("div");
 jurusanWrapper.className = "subtest"; // biar sama gaya dengan subtest lain
 jurusanWrapper.innerHTML = `
   <h3>Jurusan yang kamu tuju (Opsional)</h3>
-  <label for="jurusan">Tuliskan 1-6 jurusan pilihanmu</label>
+  <label for="jurusan">Tuliskan jurusan pilihanmu (boleh 1--6 pilihan)</label>
   <input type="text" id="jurusan" name="jurusan" placeholder="Contoh: Ilmu Komputer, ..., ..."/>
 `;
 subtestsContainer.appendChild(jurusanWrapper);
