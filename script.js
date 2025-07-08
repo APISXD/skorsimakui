@@ -18,6 +18,56 @@ window.addEventListener("DOMContentLoaded", () => {
 
   }
 });
+
+function getMotivasiBySkor(skor) {
+  const motivasiList = {
+    low: [
+      "Jangan menyerah, ini awal dari perjuanganmu!",
+      "Semua orang hebat juga pernah gagal. Ayo bangkit!",
+      "Coba lagi, kamu pasti bisa lebih baik!",
+      "Langkah kecil hari ini bisa jadi lompatan besar besok.",
+      "Nggak masalah, yang penting semangatmu nggak padam!",
+    ],
+    mediumLow: [
+      "Bagus! Tinggal selangkah lagi menuju peningkatan!",
+      "Sudah mulai panas! Terus gas ya!",
+      "Konsistensi lebih penting daripada hasil instan!",
+      "Kamu punya potensi besar. Terus kembangkan ya!",
+      "Perjalanan ini baru dimulai, tetap semangat!",
+    ],
+    medium: [
+      "Kamu makin mantap! Pertahankan ritmemu!",
+      "Kamu di jalur yang benar. Jangan ragu untuk push lagi!",
+      "Latihanmu mulai terlihat hasilnya!",
+      "Terus latih soal-soalmu, kamu hampir sampai!",
+      "Hasil bagus! Tapi jangan cepat puas ya!",
+    ],
+    high: [
+      "Kamu hebat! Tinggal jaga konsistensi dan fokus.",
+      "Sudah hampir sampai di puncak! Jangan lengah!",
+      "Kamu bisa banget lolos SIMAK UI dengan skor begini!",
+      "Siap-siap lihat namamu di pengumuman!",
+      "Satu kata: IMPRESIF! Tapi terus berlatih ya!",
+    ],
+    elite: [
+      "Wow! Kamu siap tempur banget buat SIMAK UI!",
+      "Gila sih ini, tinggal doa dan restu orang tua!",
+      "Kamu termasuk yang paling siap! Salutt!",
+      "Jaga ritme dan jangan overconfident, kamu tinggal selangkah lagi!",
+      "SCORE DEWA! Tapi inget, tetap rendah hati ya!",
+    ],
+  };
+
+  let kategori = "low";
+  if (skor > 400) kategori = "elite";
+  else if (skor > 300) kategori = "high";
+  else if (skor > 200) kategori = "medium";
+  else if (skor > 100) kategori = "mediumLow";
+
+  const pesan = motivasiList[kategori];
+  return pesan[Math.floor(Math.random() * pesan.length)];
+}
+
 const subtestsContainer = document.getElementById("subtests");
 
 subtestsData.forEach((subtest, index) => {
@@ -90,6 +140,12 @@ document.getElementById("scoreForm").addEventListener("submit", function (e) {
   document.getElementById("others-result").classList.remove("locked");
   const infoText = document.querySelector(".locked-info");
   if (infoText) infoText.remove();
+    const motivasi = getMotivasiBySkor(totalSkor);
+  document.getElementById("result").innerHTML += `
+    <div class="motivasi-box">
+      <p><em>💡 Motivasi untukmu:</em><br><strong>“${motivasi}”</strong></p>
+    </div>
+  `;
 
   // Tambahkan total skor ke akhir
   dataToSend["Total Skor"] = totalSkor;
