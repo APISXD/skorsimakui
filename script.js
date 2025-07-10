@@ -175,7 +175,7 @@ document.getElementById("scoreForm").addEventListener("submit", function (e) {
     });
 });
 function updateCountdown() {
-  const targetDate = new Date("July 11, 2025 00:00:00").getTime();
+  const targetDate = new Date("July 8, 2025 16:00:00").getTime();
   const now = new Date().getTime();
   const distance = targetDate - now;
 
@@ -195,7 +195,7 @@ function updateCountdown() {
 
   document.getElementById(
     "countdown"
-  ).innerText = `Menuju Pengumuman SIMAK UI (+- 11 Juli): ${days} hari ${hours} jam ${minutes} menit ${seconds} detik`;
+  ).innerText = `Sudah Pengumuman SIMAK UI (+- 08 Juli): ${days} hari ${hours} jam ${minutes} menit ${seconds} detik`;
 }
 
 const interval = setInterval(updateCountdown, 1000);
